@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Parsing the CellData.json file in order to find the number of cells
+cells=`cat input/CellData.json | awk '/Number of Cells/{print $4}' | sed 's/[:,]//g'`
+
+mpitasks=$((cells+1))
+export MPI_TASKS=$mpitasks
+export OMP_NUM_THREADS=1
+mpirun -np $MPI_TASKS ./cl_sim -x OMP_NUM_THREADS=1
